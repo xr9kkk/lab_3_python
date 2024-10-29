@@ -3,19 +3,37 @@
 # Класс для работы с объектом "Стихийное бедствие"
 # Этот класс включает закрытые поля, декоратор и метод приведения к строке.
 
+
 def casualties_to_readable(getter_func):
-    """Декоратор для форматирования числа погибших в понятный вид."""
-    def wrapper(instance):
+    def wrapper(instance): #вызов экземпляра класса
         casualties = getter_func(instance)
-        if casualties >= 1_000_000:
-            return f"{casualties // 1_000_000} миллионов"
-        elif casualties >= 1_000:
-            return f"{casualties // 1_000} тысяч"
-        elif casualties >= 100:
-            return f"{casualties // 100} сотен"
-        else:
-            return f"{casualties} человек"
+
+        def format_number(num):
+            units = ['человек', 'тысяча', 'тыс.', 'миллион', 'млн.']
+            suffixes = ['', '', 'та', '', 'а']
+
+            if num >= 1_000_000:
+                return f"{num / 1_000_000:.1f} млн."
+            elif num >= 1_000:
+                return f"{num / 1000:.1f} тыс."
+            elif num > 100 < 500:
+                return f"{num / 100} сотни"
+            elif num >=500:
+                return  f"{num / 100} сотен"
+            elif num == 100:
+                return f"{num//100} сотня"
+            else:
+                return f"{num} {units[num]}{suffixes[num // 10]}"
+
+        return format_number(casualties)
+
     return wrapper
+# Когда декоратор @casualties_to_readable применяется к методу класса, он создает новую функцию wrapper.
+# Эта функция wrapper принимает один аргумент - экземпляр класса (instance).
+# Внутри wrapper вызывается оригинальный метод класса через getter_func(instance).
+# Результат этого вызова сохраняется в переменную casualties.
+# Затем casualties передается в функцию format_number, которая форматирует его.
+
 
 class NaturalDisaster:
 

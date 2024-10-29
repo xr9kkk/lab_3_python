@@ -56,7 +56,7 @@ def save_to_file(disasters):
     """Сохранение бедствий в файл."""
     filename = input("Введите имя файла для сохранения: ")
     try:
-        with open(filename, "w") as file:
+        with open(filename, "w", encoding="utf-16") as file:
             for disaster in disasters:
                 file.write(f"{disaster.disaster_type},{disaster.location},{disaster._NaturalDisaster__casualties}\n")
         print("Данные сохранены.")
@@ -67,7 +67,7 @@ def load_from_file(disasters):
     """Загрузка бедствий из файла."""
     filename = input("Введите имя файла для загрузки: ")
     try:
-        with open(filename, "r") as file:
+        with open(filename, "r", encoding="utf-16") as file:
             for line in file:
                 disaster_type, location, casualties = line.strip().split(',')
                 disaster = NaturalDisaster(disaster_type, location, int(casualties))
@@ -75,6 +75,7 @@ def load_from_file(disasters):
         print("Данные загружены.")
     except Exception as e:
         print(f"Ошибка при загрузке: {e}")
+
 
 if __name__ == "__main__":
     main()
